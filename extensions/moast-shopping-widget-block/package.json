@@ -1,0 +1,25 @@
+{
+    "name": "moast-shopping-widget-block",
+    "private": true,
+    "version": "1.0.0",
+    "license": "UNLICENSED",
+    "type": "module",
+    "scripts": {
+        "dev": "concurrently -r -k -P \"pnpm run shopify:dev {@}\" \"pnpm run vite:dev\" --",
+        "build": "pnpm run vite:build && pnpm run shopify:build",
+        "deploy": "pnpm run vite:build && pnpm run shopify:deploy",
+        "vite:dev": "vite",
+        "vite:build": "vite build",
+        "shopify": "pnpm exec shopify",
+        "shopify:dev": "shopify app dev --path ../../",
+        "shopify:build": "pnpm exec shopify app build --path ../../",
+        "shopify:deploy": "pnpm exec shopify app deploy --path ../../"
+    },
+    "devDependencies": {
+        "concurrently": "^8.2.1",
+        "sass": "^1.77.2",
+        "vite": "^4.4.9",
+        "vite-plugin-page-reload": "^0.1.0",
+        "vite-plugin-shopify": "^2.2.0"
+    }
+}
