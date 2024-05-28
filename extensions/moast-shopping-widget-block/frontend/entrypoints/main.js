@@ -47,7 +47,6 @@ if (customElements.get('moast-slide-up') === undefined) {
     class MoastSlideUP extends HTMLElement {
         constructor() {
             super();
-            const self = this;
             this.lastPoint = { x: null, y: null };
             this.leftOrRight = '';
             this.upOrDown = '';
@@ -113,9 +112,6 @@ if (customElements.get('moast-slide-up') === undefined) {
                 </div>
             </div>
             `
-        }
-        checkValidity() {
-
         }
 
         connectedCallback() {
@@ -190,10 +186,6 @@ if (customElements.get('moast-slide-up') === undefined) {
                 }
 
             })
-            // this.addEventListener("mouseout", (e) => {
-            //     console.log("mouseout");
-            //     window.removeEventListener("mousemove", slideUp, true);
-            // })
 
         }
     }
