@@ -10,7 +10,7 @@ swiper-container {
       min-height: 40%;
       width: 100%;
       justify-content: center;
-      align-items: center;
+      align-items: stretch;
       position: absolute;
       bottom: 0;
       left: 0;
@@ -44,6 +44,10 @@ swiper-container {
         }
         .header {
           padding: 3rem 0;
+          user-select: none;
+          * {
+            pointer-events: none;
+          }
           .title {
             font-weight: 600;
             margin-top: 1rem;

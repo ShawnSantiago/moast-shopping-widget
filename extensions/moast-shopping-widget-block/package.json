@@ -23,6 +23,7 @@
         "vite-plugin-shopify": "^2.2.0"
     },
     "dependencies": {
+        "motion": "^10.17.0",
         "swiper": "^11.1.3"
     }
 }

@@ -1,7 +1,7 @@
 import 'vite/modulepreload-polyfill';
 import profiles from '../data/profile.json';
 import { register } from 'swiper/element/bundle'// import Swiper JS
-import Swiper from 'swiper';
+import { animate, glide, spring } from 'motion';
 // import Swiper styles
 import 'swiper/css';
 register();
@@ -35,7 +35,7 @@ if (customElements.get('moast-slider') == undefined) {
             const swiperContainer = document.createElement('swiper-container');
 
             swiperContainer.innerHTML = ` ${slides.map((slide) => slide.outerHTML).join('')}`
-
+            swiperContainer.setAttribute('touch-start-prevent-default', 'false')
             this.shadowRoot.appendChild(swiperContainer);
         }
 
@@ -47,18 +47,40 @@ if (customElements.get('moast-slide-up') === undefined) {
     class MoastSlideUP extends HTMLElement {
         constructor() {
             super();
+            const self = this;
+            this.lastPoint = { x: null, y: null };
+            this.leftOrRight = '';
+            this.upOrDown = '';
             this.addEventListener('message-success', (e) => {
-                this.append(this.renderSucccessAlert());
-                setTimeout(() => {
-                    this.querySelector('.message_success').remove()
-                }, 3000)
+                const item = this.renderSucccessAlert();
+                this.append(item);
+                animate(
+                    item,
+                    { opacity: [0, 1] },
+
+                ).finished
+                    .then(() => {
+                        setTimeout(() => {
+                            animate(
+                                item,
+                                { opacity: [1, 0] },
+
+                            ).finished
+                                .then(() => {
+                                    this.querySelector('.message_success').remove();
+                                })
+                        }, 3000)
+                    })
+
             })
+
         }
         renderSucccessAlert() {
             const message = document.createElement('div');
             message.classList.add('message_success');
+            message.style.opacity = 0
             message.innerHTML = `
-            <div class="message_success">
+            <div>
                 <p>Message sent successfully</p>
             </div>
             `
@@ -124,7 +146,55 @@ if (customElements.get('moast-slide-up') === undefined) {
                 if (message.checkValidity() && form.checkValidity()) {
                     this.dispatchEvent(new CustomEvent('message-success', { detail: { message: message.value } }));
                 }
+
             })
+
+            window.addEventListener('mousemove', e => {
+                const leftOrRight = (
+                    e.clientX > this.lastPoint.x ? 'right'
+                        : e.clientX < this.lastPoint.x ? 'left'
+                            : 'none'
+                )
+                const upOrDown = (
+                    e.clientY > this.lastPoint.y ? 'down'
+                        : e.clientY < this.lastPoint.y ? 'up'
+                            : 'none'
+                )
+                this.lastPoint.x = e.clientX
+                this.lastPoint.y = e.clientY
+                this.leftOrRight = leftOrRight
+                this.upOrDown = upOrDown
+
+            })
+
+            this.querySelector('.header').addEventListener("mousedown", (e) => {
+                console.log(this.leftOrRight, this.upOrDown);
+                if (!this.classList.contains('expanded')) {
+                    animate(
+                        this,
+                        { minHeight: "100%" },
+                        { easing: 'ease-in-out' }
+                    ).finished
+                        .then(() => {
+                            this.classList.add('expanded');
+                        })
+                } else {
+                    animate(
+                        this,
+                        { minHeight: "50%" },
+                        { easing: 'ease-in-out' }
+                    ).finished
+                        .then(() => {
+                            this.classList.remove('expanded');
+                        })
+                }
+
+            })
+            // this.addEventListener("mouseout", (e) => {
+            //     console.log("mouseout");
+            //     window.removeEventListener("mousemove", slideUp, true);
+            // })
+
         }
     }
     customElements.define('moast-slide-up', MoastSlideUP);
