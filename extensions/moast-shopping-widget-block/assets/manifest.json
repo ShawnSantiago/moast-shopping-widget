@@ -1,0 +1,19 @@
+{
+  "frontend/entrypoints/main.css": {
+    "file": "main-816446ca.css",
+    "src": "frontend/entrypoints/main.css"
+  },
+  "frontend/entrypoints/main.js": {
+    "css": [
+      "main-816446ca.css"
+    ],
+    "file": "main-7f18f795.js",
+    "isEntry": true,
+    "src": "frontend/entrypoints/main.js"
+  },
+  "frontend/entrypoints/main.scss": {
+    "file": "main-6f49c319.css",
+    "isEntry": true,
+    "src": "frontend/entrypoints/main.scss"
+  }
+}
